@@ -39,3 +39,37 @@ let currentDateELement = document.querySelector("#current-date");
 let currentDate = new Date();
 
 currentDateELement.innerHTML = formatDate(currentDate);
+
+ript>
+        searchForm = document.getElementById("search-form");
+        let searchInput = document.getElementById("search-input");
+        let currentCity = document.getElementById("current-city");
+        let currentTemperatureValue = document.getElementById(
+            "current-temperature-value"
+        );
+        let currentTemperatureIcon = document.querySelector(
+            ".current-temperature-icon"
+        );
+
+        let apiKey = "0c0fc4d0af9a25bbb3ad3644ab6e153c";
+
+        searchForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+            let city = searchInput.value.trim();
+
+            if (city) {
+                fetchCityWeather(city);
+            }
+        });
+
+        function fetchCityWeather(city) {
+            let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
+
+            axios.get(apiUrl).then(function (response) {
+                let data = response.data;
+                let temperature = data.main.temp;
+
+                currentCity.textContent = city;
+                currentTemperatureValue.textContent = Math.round(temperature);
+            });
+        }
